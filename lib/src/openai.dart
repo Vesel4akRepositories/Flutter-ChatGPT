@@ -13,6 +13,7 @@ import 'package:chat_gpt_sdk/src/model/openai_engine/engine_model.dart';
 import 'package:chat_gpt_sdk/src/model/openai_model/openai_models.dart';
 import 'package:chat_gpt_sdk/src/utils/constants.dart';
 import 'package:dio/dio.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'client/exception/openai_exception.dart';
 import 'client/interceptor/interceptor_wrapper.dart';
@@ -149,7 +150,7 @@ class OpenAI {
   }
 
   StreamController<ChatCTResponse>? _chatCompleteControl =
-      StreamController<ChatCTResponse>.broadcast();
+      BehaviorSubject();
   void _chatCompleteText({required ChatCompleteText request}) {
     _client
         .postStream("$kURL$kChatGptTurbo", request.toJson())
