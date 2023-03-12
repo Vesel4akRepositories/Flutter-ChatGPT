@@ -151,6 +151,7 @@ class OpenAI {
 
   StreamController<ChatCTResponse>? _chatCompleteControl =
       BehaviorSubject();
+
   void _chatCompleteText({required ChatCompleteText request}) {
     _client
         .postStream("$kURL$kChatGptTurbo", request.toJson())
@@ -183,7 +184,7 @@ class OpenAI {
   ///free memory [close]
   void close() {
     _completeControl?.close();
-    _chatCompleteControl?.close();
+   // _chatCompleteControl?.close();
   }
 
   ///generate image with prompt [generateImageStream]
