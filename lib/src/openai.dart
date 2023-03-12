@@ -161,19 +161,12 @@ class OpenAI {
           ..addError(
               "chat complete error: ${rawData.statusMessage} code: ${rawData.statusCode} data: ${rawData.data}");
       } else {
-        if (rawData.data is String) return;
-
-        final response = CTResponse.fromJson(rawData.data);
-
-        if (response.choices[0].finish_reason == 'stop') {
-          _completeControl
-            ?..sink
-            ..add(CTResponse.fromJson(rawData.data));
-        } else {
-          _completeControl
-            ?..sink
-            ..add(CTResponse.fromJson(rawData.data));
-        }
+        _client.log.debugString(
+            "============= success ==================\nresponse body :${rawData.data}");
+        if (rawData.data is! Map) return;
+        _chatCompleteControl
+          ?..sink
+          ..add(ChatCTResponse.fromJson(rawData.data));
       }
     }).onError((err) {
       if (err is DioError) {
