@@ -51,7 +51,7 @@ class OpenAI {
     _buildShared();
 
     if ("$token".isEmpty) throw MissionTokenException();
-    final setup = baseOption == null ? HttpSetup().httpSetup() : baseOption;
+    final setup = baseOption == null ? HttpSetup() : baseOption;
 
     final dio = Dio(BaseOptions(
         sendTimeout: setup.sendTimeout,
@@ -128,7 +128,7 @@ class OpenAI {
         _completeControl
           ?..sink
           ..addError(
-              "complete error: status code :${err.error}\n error body :${err.response?.data}");
+              "complete error: message :${err.message}\n error body :${err.response?.data}, code: ${err.response?.statusCode}");
       }
     });
   }
@@ -172,7 +172,7 @@ class OpenAI {
         _chatCompleteControl
           ?..sink
           ..addError(
-              "chat complete error: status code :${err.error}\n error body :${err.response?.data}");
+              "chat complete error message :${err.message}\n error body :${err.response?.data}, code: ${err.response?.statusCode}");
       }
     });
   }
@@ -214,7 +214,7 @@ class OpenAI {
                   _genImgController
                     ..sink
                     ..addError(
-                        "generate image error: status code :${err.error}\nerror body :${err.response?.data}")
+                        "generate image error: message :${err.message}\nerror body :${err.response?.data}, code: ${err.response?.statusCode}")
                 }
             });
   }

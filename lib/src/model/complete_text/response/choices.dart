@@ -12,10 +12,10 @@ class Choices {
   );
 
   factory Choices.fromJson(Map<String, dynamic> json) => Choices(
-        json['text'] as String,
-        json['index'] as int,
+        json['text'],
+        json['index'] ,
         json['logprobs'],
-        json['finish_reason'] as String?,
+        json['finish_reason'],
       );
 
   Map<String, dynamic> toJson() => _ChoicesToJson(this);

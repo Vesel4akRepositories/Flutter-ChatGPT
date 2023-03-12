@@ -20,6 +20,6 @@ class ChatChoice {
   Map<String, dynamic> toJson() => {
         "index": index,
         "message": message.toJson(),
-        "finish_reason": finishReason,
+        "finish_reason": finishReason ?? "",
       };
 }
