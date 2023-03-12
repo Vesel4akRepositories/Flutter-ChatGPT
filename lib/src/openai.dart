@@ -129,7 +129,6 @@ class OpenAI {
           _completeControl
             ?..sink
             ..add(CTResponse.fromJson(rawData.data));
-          _completeControl?.close();
         } else {
           _completeControl
             ?..sink
