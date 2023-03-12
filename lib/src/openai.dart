@@ -165,7 +165,7 @@ class OpenAI {
             "============= success ==================\nresponse body :${rawData.data}");
         if (rawData.data is! Map) return;
         _chatCompleteControl
-          ?..sink
+          ?..stream
           ..add(ChatCTResponse.fromJson(rawData.data));
       }
     }).onError((err) {
