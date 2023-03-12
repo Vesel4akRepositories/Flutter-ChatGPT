@@ -120,6 +120,9 @@ class OpenAI {
       } else {
         _client.log.debugString(
             "============= success ==================\nresponse body :${rawData.data}");
+
+        if (rawData.data is String) return;
+
         final response = CTResponse.fromJson(rawData.data);
 
         if (response.choices[0].finish_reason == 'stop') {
