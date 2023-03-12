@@ -108,7 +108,6 @@ class OpenAI {
 
   StreamController<CTResponse>? _completeControl =
       StreamController<CTResponse>.broadcast();
-
   void _completeText({required CompleteText request}) {
     _client.postStream("$kURL$kCompletion", request.toJson()).listen((rawData) {
       if (rawData.statusCode != HttpStatus.ok) {
@@ -120,20 +119,9 @@ class OpenAI {
       } else {
         _client.log.debugString(
             "============= success ==================\nresponse body :${rawData.data}");
-
-        if (rawData.data is String) return;
-
-        final response = CTResponse.fromJson(rawData.data);
-
-        if (response.choices[0].finish_reason == 'stop') {
-          _completeControl
-            ?..sink
-            ..add(CTResponse.fromJson(rawData.data));
-        } else {
-          _completeControl
-            ?..sink
-            ..add(CTResponse.fromJson(rawData.data));
-        }
+        _completeControl
+          ?..sink
+          ..add(CTResponse.fromJson(rawData.data));
       }
     }).onError((err) {
       if (err is DioError) {
@@ -146,8 +134,7 @@ class OpenAI {
   }
 
   ///Given a chat conversation, the model will return a chat completion response.
-  Future<ChatCTResponse?> onChatCompletion(
-      {required ChatCompleteText request}) {
+  Future<ChatCTResponse?> onChatCompletion({required ChatCompleteText request}) {
     return _client.post("$kURL$kChatGptTurbo", request.toJson(),
         onSuccess: (it) {
       return ChatCTResponse.fromJson(it);
@@ -163,7 +150,6 @@ class OpenAI {
 
   StreamController<ChatCTResponse>? _chatCompleteControl =
       StreamController<ChatCTResponse>.broadcast();
-
   void _chatCompleteText({required ChatCompleteText request}) {
     _client
         .postStream("$kURL$kChatGptTurbo", request.toJson())
@@ -175,11 +161,19 @@ class OpenAI {
           ..addError(
               "chat complete error: ${rawData.statusMessage} code: ${rawData.statusCode} data: ${rawData.data}");
       } else {
-        _client.log.debugString(
-            "============= success ==================\nresponse body :${rawData.data}");
-        _chatCompleteControl
-          ?..sink
-          ..add(ChatCTResponse.fromJson(rawData.data));
+        if (rawData.data is String) return;
+
+        final response = CTResponse.fromJson(rawData.data);
+
+        if (response.choices[0].finish_reason == 'stop') {
+          _completeControl
+            ?..sink
+            ..add(CTResponse.fromJson(rawData.data));
+        } else {
+          _completeControl
+            ?..sink
+            ..add(CTResponse.fromJson(rawData.data));
+        }
       }
     }).onError((err) {
       if (err is DioError) {
@@ -205,7 +199,6 @@ class OpenAI {
   }
 
   final _genImgController = StreamController<GenImgResponse>.broadcast();
-
   void _generateImage(GenerateImage request) {
     _client
         .postStream("$kURL$kGenerateImage", request.toJson())
