@@ -149,7 +149,7 @@ class OpenAI {
   }
 
   StreamController<ChatCTResponse>? _chatCompleteControl =
-      StreamController<ChatCTResponse>.broadcast();
+      StreamController<ChatCTResponse>();
   void _chatCompleteText({required ChatCompleteText request}) {
     _client
         .postStream("$kURL$kChatGptTurbo", request.toJson())
