@@ -144,6 +144,9 @@ class OpenAI {
   ///Given a chat conversation, the model will return a chat completion response.
   Stream<ChatCTResponse?> onChatCompletionStream(
       {required ChatCompleteText request}) {
+    _chatCompleteControl!.stream.listen((event) {
+      print('Hello');
+    }); 
     _chatCompleteText(request: request);
     return _chatCompleteControl!.stream;
   }
