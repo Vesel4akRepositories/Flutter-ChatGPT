@@ -146,7 +146,7 @@ class OpenAI {
   Stream<ChatCTResponse?> onChatCompletionStream(
       {required ChatCompleteText request}) {
     _chatCompleteText(request: request);
-    return _chatCompleteControl!.stream;
+    return _chatCompleteControl!.stream.asBroadcastStream();
   }
 
   StreamController<ChatCTResponse>? _chatCompleteControl =
